@@ -12,6 +12,14 @@ SET SQL_SAFE_UPDATES = 0;
 
 -- 2. Make 'Ship_Mode' as the primary key in the above table.
 
+create table shipping_mode_dimen (
+	Ship_Mode varchar(25),
+    Vehicle_Company varchar(25),
+    Toll_Required boolean
+);
+
+alter table shipping_mode_dimen
+add constraint primary key (Ship_Mode);
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- DML Statements
@@ -19,90 +27,130 @@ SET SQL_SAFE_UPDATES = 0;
 -- 1. Insert two rows in the table created above having the row-wise values:
 --    (i)'DELIVERY TRUCK', 'Ashok Leyland', false
 --    (ii)'REGULAR AIR', 'Air India', false
+insert into shipping_mode_dimen values 
+('DELIVERY TRUCK', 'Ashok Leyland', false),
+('REGULAR AIR', 'Air India', false);
 
 -- 2. The above entry has an error as land vehicles do require tolls to be paid. Update the ‘Toll_Required’ attribute
 -- to ‘Yes’.
+update shipping_mode_dimen set Toll_Required = True 
+where Ship_Mode = 'DELIVERY TRUCK';
 
 -- 3. Delete the entry for Air India.
-
+SET SQL_SAFE_UPDATES = 0;
+delete
+from shipping_mode_dimen
+where Vehicle_Company = 'Air India';
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- Adding and Deleting Columns
 
 -- 1. Add another column named 'Vehicle_Number' and its data type to the created table. 
 
--- 2. Update its value to 'MH-05-R1234'.
+alter table shipping_mode_dimen
+add Vehicle_Number varchar(20);
 
+-- 2. Update its value to 'MH-05-R1234'.
+update shipping_mode_dimen
+set Vehicle_Number='MH-05-R1234';
 -- 3. Delete the created column.
+alter table shipping_mode_dimen
+drop column Vehicle_Number;
 
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- Changing Column Names and Data Types
 
 -- 1. Change the column name ‘Toll_Required’ to ‘Toll_Amount’. Also, change its data type to integer.
+alter table shipping_mode_dimen
+change Toll_Required  Toll_Amount int;
 
 -- 2. The company decides that this additional table won’t be useful for data analysis. Remove it from the database.
 
-
+drop table shipping_mode_dimen;
 -- -----------------------------------------------------------------------------------------------------------------
 -- Session: Querying in SQL
 -- Basic SQL Queries
 
 -- 1. Print the entire data of all the customers.
-
+select * from cust_dimen;
 -- 2. List the names of all the customers.
-
+select Customer_Name from cust_dimen;
 -- 3. Print the name of all customers along with their city and state.
-
+select Customer_Name, City, State from cust_dimen;
 -- 4. Print the total number of customers.
 select count(*) as Total_Customers
 from cust_dimen;
 
 -- 5. How many customers are from West Bengal?
+select count(*) as Total_Customers from cust_dimen where State = 'West Bengal';
+
 
 -- 6. Print the names of all customers who belong to West Bengal.
+select Customer_Name from cust_dimen where State = 'West Bengal';
 
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- Operators
 
 -- 1. Print the names of all customers who are either corporate or belong to Mumbai.
+SELECT Customer_Name, City, Customer_Segment FROM cust_dimen
+where Customer_Segment='CORPORATE' OR City='Mumbai';
 
 -- 2. Print the names of all corporate customers from Mumbai.
+SELECT Customer_Name, City, Customer_Segment FROM cust_dimen
+where Customer_Segment='CORPORATE' AND City='Mumbai';
 
 -- 3. List the details of all the customers from southern India: namely Tamil Nadu, Karnataka, Telangana and Kerala.
+SELECT Customer_Name, City, Customer_Segment FROM cust_dimen
+where State in ('Tamil Nadu', 'Karnataka', 'Telangana','Kerala');
 
 -- 4. Print the details of all non-small-business customers.
+SELECT Customer_Name, City, Customer_Segment FROM cust_dimen
+where Customer_Segment='SMALL BUSINESS';
 
 -- 5. List the order ids of all those orders which caused losses.
+SELECT * FROM market_star_schema.market_fact_full
+where Profit < 0 ;
 
 -- 6. List the orders with '_5' in their order ids and shipping costs between 10 and 15.
-
+SELECT * FROM market_star_schema.market_fact_full
+where Ord_id like '%\_5%' and Shipping_Cost between 10 and 15 ;
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- Aggregate Functions
 
 -- 1. Find the total number of sales made.
-
+SELECT count(sales)  as No_of_Sales FROM market_star_schema.market_fact_full;
 -- 2. What are the total numbers of customers from each city?
+SELECT count(*) as No_Of_Cust, City FROM market_star_schema.cust_dimen group by city;
 
 -- 3. Find the number of orders which have been sold at a loss.
+SELECT count(*) as loss_order FROM market_star_schema.market_fact_full
+where Profit < 0 ;
 
 -- 4. Find the total number of customers from Bihar in each segment.
+SELECT count(*) as No_Of_Cust, Customer_Segment FROM cust_dimen
+where State='Bihar' group by Customer_Segment;
 
 -- 5. Find the customers who incurred a shipping cost of more than 50.
-
+SELECT c.Customer_Name, sum(m.Shipping_Cost) as Customer_Wise_Shipping_Cost  FROM cust_dimen as c INNER JOIN  market_fact_full as m on m.Cust_id = c.Cust_id group by c.Cust_id
+having Customer_Wise_Shipping_Cost > 50;
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- Ordering
 
 -- 1. List the customer names in alphabetical order.
+SELECT Customer_Name FROM market_star_schema.cust_dimen order by Customer_Name asc;
 
 -- 2. Print the three most ordered products.
+SELECT sum(Order_Quantity) as order_count, Prod_id FROM market_star_schema.market_fact_full group by Prod_id order by order_count desc limit 0,3;
 
 -- 3. Print the three least ordered products.
+SELECT sum(Order_Quantity) as order_count, Prod_id FROM market_star_schema.market_fact_full group by Prod_id order by order_count asc limit 0,3;
 
 -- 4. Find the sales made by the five most profitable products.
+
 
 -- 5. Arrange the order ids in the order of their recency.
 
