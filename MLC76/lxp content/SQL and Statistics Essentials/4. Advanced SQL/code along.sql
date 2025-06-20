@@ -105,4 +105,71 @@ From daily_shipping_summary
 WINDOW w1 as (order by ship_date ROWS UNBOUNDED PRECEDING),
 w2 as (order by ship_date ROWS 6 PRECEDING)
 ;
+
+
+
+-- lead Lag
+
+ With order_info as (
+	Select c.Customer_Name,
+	 m.Ord_id, 
+	 o.order_date
+	From
+		market_fact_full as m
+		LEFT JOIN orders_dimen as o on m.Ord_id=o.Ord_id 
+		LEFT JOIN cust_dimen as c on m.Cust_id = c.Cust_id 
+	WHERE 
+		c.Customer_Name = 'RICK WILSON'
+	Group By 
+		c.Customer_Name,
+		m.Ord_id, 
+		o.order_date
+        )
+ Select 
+	*,
+	lead(order_date,1,0) OVER (order by order_date, Ord_id) As NextOrder_Date,
+	DATEDIFF(lead(order_date,1,0) OVER (order by order_date, Ord_id),order_date) as days_diff
+ From 
+	order_info;
+; 
+
+-- alternate sql 
+
+WITH order_info AS (
+    SELECT 
+        c.Customer_Name,  
+        m.Ord_id,   
+        o.order_date  
+    FROM  
+        market_fact_full AS m  
+        LEFT JOIN orders_dimen AS o ON m.Ord_id = o.Ord_id   
+        LEFT JOIN cust_dimen AS c ON m.Cust_id = c.Cust_id  
+    WHERE 
+        c.Customer_Name = 'RICK WILSON'
+),
+order_with_lead AS (
+    SELECT 
+        *,  
+        LEAD(order_date, 1) OVER (ORDER BY order_date, Ord_id) AS NextOrder_Date
+    FROM 
+        order_info
+)
+SELECT 
+    *,  
+    DATEDIFF(NextOrder_Date, order_date) AS days_diff
+FROM 
+    order_with_lead;
  
+-- case 
+
+SELECT 
+market_fact_id,
+profit
+	CASE
+		WHEN profit <-500 THEN 'Huge Loss'
+		WHEN profit BETWEEN -500 AND 0 THEN 'Bearable Loss'
+		WHEN profit BETWEEN 0 AND 500 THEN 'Decent Profit'
+		ELSE 'Great Profit'
+	END AS Profit_type
+FROM
+	market_fact_full;
