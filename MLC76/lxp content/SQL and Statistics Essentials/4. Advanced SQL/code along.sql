@@ -173,3 +173,207 @@ profit
 	END AS Profit_type
 FROM
 	market_fact_full;
+
+-- Example 2    
+-- Classify customers on the following criteria
+-- Top 10 % of customers as Gold
+-- Next 40% of customers as Silver
+-- Rest 50% of customers as Bronze    
+
+WITH sales_info AS
+(select c.customer_name, 
+		round(SUM(m.Sales)) as TotalSales,
+        percent_rank() over (order by round(SUM(m.Sales)) desc) as per_rank
+from
+market_fact_full as m
+left join
+cust_dimen as c
+ON m.Cust_id = c.Cust_id
+group by 
+c.Customer_Name
+)
+select *,
+case
+	when per_rank <= 0.1 THEN 'Gold'
+    when per_rank > 0.1 AND per_rank <= 0.4 THEN 'Silver'
+    else 'Bronze'
+end as customer_category
+from sales_info;
+
+
+
+
+CREATE TABLE Salaries (Name VARCHAR(50),salary DECIMAL(4,1));
+
+INSERT INTO Salaries (Name, salary) VALUES
+('Sundar Pichai', 6.8),
+('Jeff Bezos', 8.7),
+('Bill Gates', 9),
+('Mukesh Ambani', 14),
+('Rahul Dravid', 1.2),
+('Vishwanathan Anand', 3),
+('Sunil Chhetri', 7),
+('Leander Paes', 2.5),
+('Saina Nehwal', 5),
+('Sania Mirza', 10);
+
+select *,
+    round(case
+        when salary <= 2.5 THEN 0
+        WHEN salary  > 2.5 AND salary <= 5 THEN (((salary - 2.5)*0.05)*100000)
+        WHEN salary > 5 AND salary <=10 THEN (((salary - 5)*0.2)*100000)+12500
+        when salary > 10 then (((salary - 10)*0.3)*100000)+112500
+    END) AS 'Tax Amounts'
+FROM salaries;
+
+
+-- User Defined Function
+
+DELIMITER $$
+
+CREATE FUNCTION profittype(profit int)
+returns varchar(40) deterministic
+
+BEGIN
+
+declare message varchar(40);
+if profit <-500 THEN 
+    SET message = 'Huge Loss';
+elseif profit BETWEEN -500 AND 0 THEN
+    SET message = 'Bearable Loss';
+elseif profit BETWEEN 0 AND 500 THEN 
+    SET message ='Decent Profit';
+ELSE
+    SET message = 'Great Profit';
+END IF;
+    
+RETURN message;
+
+END;
+DELIMITER $$
+
+SELECT 
+    	market_fact_id,
+        profit,
+    	profittype(profit)
+FROM
+    	market_fact_full;
+        
+-- Stored Procedure 
+
+CREATE PROCEDURE get_sales_customer(sales_input int)
+
+BEGIN
+
+	SELECT ROUND(Sales), Cust_id
+	FROM market_star_schema.market_fact_full
+	WHERE round(Sales) > sales_input
+	ORDER BY round(Sales);
+
+END$$
+DELIMITER $$;
+
+call get_sales_customer(300);
+
+
+-- Profits per product category
+SELECT 
+    p.Product_Category, SUM(m.Profit)
+FROM
+    market_fact_full AS m
+        INNER JOIN
+    prod_dimen AS p ON m.Prod_id = p.Prod_id
+        INNER JOIN
+    orders_dimen AS o ON m.Ord_id = o.Ord_id
+GROUP BY p.Product_Category
+ORDER BY SUM(m.Profit)
+;
+-- Profits per product subcategory
+SELECT 
+    p.Product_Category, p.Product_Sub_Category, SUM(m.Profit)
+FROM
+    market_fact_full AS m
+        INNER JOIN
+    prod_dimen AS p ON m.Prod_id = p.Prod_id
+        INNER JOIN
+    orders_dimen AS o ON m.Ord_id = o.Ord_id
+GROUP BY p.Product_Category , p.Product_Sub_Category
+ORDER BY SUM(m.Profit)
+;
+ -- Average profit per order
+SELECT 
+    p.Product_Category,
+    SUM(m.Profit) AS profits,
+    COUNT(DISTINCT o.Order_number) AS ordercount,
+    ROUND(SUM(m.Profit) / COUNT(DISTINCT o.Order_number),
+            2) AS Average_Profit_PerOreder
+FROM
+    market_fact_full AS m
+        INNER JOIN
+    prod_dimen AS p ON m.Prod_id = p.Prod_id
+        INNER JOIN
+    orders_dimen AS o ON m.Ord_id = o.Ord_id
+GROUP BY p.Product_Category
+ORDER BY p.Product_Category , SUM(m.Profit)
+;
+ -- Average profit per order
+ SELECT 
+    p.Product_Category,
+    SUM(m.Profit) AS profits,
+    COUNT(DISTINCT o.Order_number) AS ordercount,
+    ROUND(SUM(m.Profit) / COUNT(DISTINCT o.Order_number),2) AS Average_Profit_PerOreder,
+    ROUND(SUM(m.Sales) / COUNT(DISTINCT o.Order_number),2) AS Average_Sales_PerOreder,
+    ROUND(SUM(m.profit)/SUM(m.sales),4)*100 AS Profit_Percentage 
+FROM
+    market_fact_full AS m
+        INNER JOIN
+    prod_dimen AS p ON m.Prod_id = p.Prod_id
+        INNER JOIN
+    orders_dimen AS o ON m.Ord_id = o.Ord_id
+GROUP BY p.Product_Category
+ORDER BY p.Product_Category , SUM(m.Profit)
+
+-- Select top 10 profitable customer
+
+WITH customer_summary as(
+SELECT m.Cust_id,
+rank() OVER(order by SUM(m.Profit) desc) as customer_rank,
+c.Customer_Name,
+SUM(m.Profit),
+c.City as customer_city,
+c.State as customer_state,
+ROUND(SUM(m.Sales),2) as sales
+FROM
+market_fact_full as m
+INNER JOIN
+cust_dimen as c
+on m.Cust_id = c.Cust_id
+group by
+m.Cust_id
+order by SUM(m.Profit) desc
+)
+Select * from customer_summary
+WHERE customer_rank <= 10;
+
+-- customers who dicnt place any order
+
+SELECT m.Cust_id,
+c.Customer_Name,
+c.City,
+c.State,
+m.Ord_id
+FROM
+cust_dimen as c
+LEFT JOIN
+market_fact_full as m
+on  c.Cust_id = m.Cust_id
+WHERE m.Ord_id IS null
+;
+
+-- verify result
+select COUNT(Cust_id) from cust_dimen;
+-- 1832
+select COUNT(DISTINCT Cust_id) from market_fact_full;
+
+-- 1832
+   
