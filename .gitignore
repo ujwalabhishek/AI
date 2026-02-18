@@ -2,5 +2,7 @@ notebooks/data
 notebooks/cifar_net.pth
 .ipynb_checkpoints/
 # Ignore large embedding files
-glove.6B*.txt
+glove*.txt
+*.zip
+
 
