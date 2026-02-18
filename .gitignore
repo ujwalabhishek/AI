@@ -2,6 +2,7 @@ notebooks/data
 notebooks/cifar_net.pth
 .ipynb_checkpoints/
 # Ignore large embedding files
+/MLC76/lxp content/6.NLP/semantic_processing-main/Distributional Semantics/data/*
 glove*.txt
 *.zip
 
