@@ -1,12 +1,6 @@
-Since I couldn’t directly read the exact contents of your repo, I’ll give you a **clean, professional README description** suitable for an **AI learning / experimentation repository** (which matches the type of work you’ve been doing with LLMs, OpenAI APIs, function calling, agents, etc.).
-
-You can paste this under the **Description** section of your README.
-
----
-
 # AI Experiments & Learning Repository
 
-This repository contains my experiments, implementations, and learning projects related to **Artificial Intelligence, Large Language Models (LLMs), and AI-powered applications**.
+This repository contains my experiments, implementations, notes and learning projects related to **Artificial Intelligence, Large Language Models (LLMs), and AI-powered applications**.
 
 The goal of this repo is to explore practical AI development by building small prototypes, utilities, and experiments using modern AI frameworks and APIs.
 
