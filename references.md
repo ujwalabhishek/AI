@@ -24,7 +24,7 @@ With its multi-backend approach, Keras gives you the freedom to work with JAX, T
 
 Since you’re learning **AI/ML and want to build AI agents (like CodeRabbit)**, understanding the difference between **TensorFlow, Keras, and PyTorch** is very useful.
 
----
+<hr>
 
 # TensorFlow vs Keras vs PyTorch
 
@@ -42,14 +42,6 @@ Since you’re learning **AI/ML and want to build AI agents (like CodeRabbit)**,
 ---
 
 # 1️⃣ TensorFlow
-
-![Image](https://www.researchgate.net/publication/361127844/figure/fig1/AS%3A11431281100308493%401669345033221/Unsupervised-learning-model13-4-Architecture-The-architecture-of-TensorFlow-is-divided.png)
-
-![Image](https://miro.medium.com/v2/resize%3Afit%3A1200/1%2AVXwi23EGtlHt8Ag9tiwYIg.png)
-
-![Image](https://cdn.botpenguin.com/assets/website/Tensorflow_0e2dd82f94.png)
-
-![Image](https://yqintl.alicdn.com/fcb64e343bb2e21588b1f0a550c9a6fd64edb57a.png)
 
 TensorFlow is a **complete machine learning ecosystem**.
 
@@ -81,14 +73,6 @@ It is **very powerful for production systems**.
 
 # 2️⃣ Keras
 
-![Image](https://i.sstatic.net/O6zlW.png)
-
-![Image](https://www.researchgate.net/publication/350567223/figure/fig2/AS%3A1007855343792135%401617302847605/Fig-2-A-sequential-neural-model-Keras-Sequential-Api-nd-Activation-Functions-The.jpg)
-
-![Image](https://developmentseed.org/tensorflow-eo-training-2/_images/TFops.png)
-
-![Image](https://miro.medium.com/0%2A3miI8hO-ZI_Mnb0t.jpg)
-
 Keras is the **user-friendly interface** for building neural networks.
 
 It lets you build models with **very little code**.
@@ -115,14 +99,6 @@ Today most people use **`tf.keras` inside TensorFlow**.
 ---
 
 # 3️⃣ PyTorch
-
-![Image](https://www.researchgate.net/publication/381273759/figure/fig5/AS%3A11431281251691537%401718319545807/Convolutional-Neural-Network-Architecture-242-PyTorch-deep-learning-framework-PyTorch.jpg)
-
-![Image](https://webflow-prod-assets.s3.amazonaws.com/6525256482c9e9a06c7a9d3c%2F65b7d2f9a11449a24ce93e71_1489e78a_5-2.webp)
-
-![Image](https://sebastianraschka.com/images/teaching/pytorch-1h/figure_12.webp)
-
-![Image](https://sebastianraschka.com/images/teaching/pytorch-1h/figure_10.webp)
 
 PyTorch is another **deep learning framework** developed by Meta Platforms.
 
@@ -216,16 +192,16 @@ Since you are building **AI tools and agents**:
 Learn in this order:
 
 1️⃣ Python
+
 2️⃣ PyTorch
+
 3️⃣ Transformers
+
 4️⃣ HuggingFace
+
 5️⃣ LangChain / Agents
+
 6️⃣ Vector databases
 
----
+<hr>
 
-If you want, I can also show you something **very useful for your career**:
-
-**“Complete AI Agent Developer Roadmap (2026)”**
-
-This will show exactly **what to learn step-by-step to build tools like CodeRabbit, Devin, or AutoGPT.** 🚀
