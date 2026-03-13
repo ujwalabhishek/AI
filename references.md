@@ -21,9 +21,7 @@ With its multi-backend approach, Keras gives you the freedom to work with JAX, T
 
 # tensorflow vs keras vs pytorch
 [https://chatgpt.com/c/69b3f145-6974-8323-9b7f-9694554ff91f](https://chatgpt.com/c/69b3f145-6974-8323-9b7f-9694554ff91f)
-
-Since you’re learning **AI/ML and want to build AI agents (like CodeRabbit)**, understanding the difference between **TensorFlow, Keras, and PyTorch** is very useful.
-
+S
 <hr>
 
 # TensorFlow vs Keras vs PyTorch
