@@ -1,3 +1,26 @@
 notebooks/data
 notebooks/cifar_net.pth
 .ipynb_checkpoints/
+<<<<<<< HEAD
+=======
+# Ignore large embedding files
+/MLC76/lxp content/6.NLP/semantic_processing-main/Distributional Semantics/data/*
+glove*.txt
+*.zip
+
+
+MLC76/lxp content/7.Generative AI/Session_1/openai_api.txt
+MLC76/lxp content/7.Generative AI/data/dev.en
+MLC76/lxp content/7.Generative AI/data/dev.hi
+MLC76/lxp content/7.Generative AI/data/test.en
+MLC76/lxp content/7.Generative AI/data/test.hi
+MLC76/lxp content/7.Generative AI/data/train.en
+MLC76/lxp content/7.Generative AI/data/train.hi
+MLC76/lxp content/7.Generative AI/data/dev.en
+MLC76/lxp content/7.Generative AI/data/dev.hi
+MLC76/lxp content/7.Generative AI/data/test.en
+MLC76/lxp content/7.Generative AI/data/test.hi
+MLC76/lxp content/7.Generative AI/data/train.en
+MLC76/lxp content/7.Generative AI/data/train.hi
+MLC76/lxp content/7.Generative AI/6.ShopAssist_ Data + Demo/openai_key.txt
+>>>>>>> b15d8bb9803d1e371221ae75f0e459c2861dbb4d
