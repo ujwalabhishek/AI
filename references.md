@@ -13,6 +13,10 @@ With its multi-backend approach, Keras gives you the freedom to work with JAX, T
 
 # Tensorflow Documentations
 
+## Neural Network TensorFlow Playground
+
+[tensorflow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=spiral&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=5,4,3&seed=0.20719&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false)
+
 ## GRU
 [https://www.tensorflow.org/api_docs/python/tf/keras/layers/GRU](https://www.tensorflow.org/api_docs/python/tf/keras/layers/GRU)
 
