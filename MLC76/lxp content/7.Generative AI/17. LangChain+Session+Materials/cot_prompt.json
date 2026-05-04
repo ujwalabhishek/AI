@@ -1,0 +1,15 @@
+{
+    "name": null,
+    "input_variables": [
+        "question"
+    ],
+    "input_types": {},
+    "output_parser": null,
+    "partial_variables": {},
+    "metadata": null,
+    "tags": null,
+    "template": "Given the question, think step by step for the answer\n Question: {question}\n\nAnswer:",
+    "template_format": "f-string",
+    "validate_template": false,
+    "_type": "prompt"
+}
